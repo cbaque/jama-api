@@ -1,0 +1,13 @@
+{
+    "name": "Pedidos",
+    "alias": "pedidos",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Pedidos\\Providers\\PedidosServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}
