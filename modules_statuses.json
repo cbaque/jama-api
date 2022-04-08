@@ -2,5 +2,7 @@
     "Auth": true,
     "User": true,
     "Productos": true,
-    "Pedidos": true
+    "Pedidos": true,
+    "Configuracion": true,
+    "Empresa": true
 }

@@ -13,6 +13,9 @@ class DetalleCompra extends Model
         'id_prod' 
         , 'id_pedido' 
         , 'cantidad' 
+        , 'subtotal' 
+        , 'iva_valor' 
+        , 'total' 
         , 'estado_compra' 
     ];
     protected $table = 'detalle_compra';
@@ -23,4 +26,9 @@ class DetalleCompra extends Model
     {
         return \Modules\Pedidos\Database\factories\DetalleCompraFactory::new();
     }
+
+    public function producto()
+    {
+        return $this->hasOne( 'Modules\Productos\Entities\Productos' , 'id_prod' , 'id_prod' );
+    }      
 }

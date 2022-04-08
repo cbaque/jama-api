@@ -22,6 +22,7 @@ class User extends Authenticatable
         'email',
         'password',
         'ci_cliente',
+        'ci_empleado',
     ];
 
     /**
@@ -46,5 +47,10 @@ class User extends Authenticatable
     public function cliente()
     {
         return $this->hasOne( 'Modules\Auth\Entities\UserClientes' , 'ci_cliente' , 'ci_cliente' );
-    }     
+    }    
+
+    public function motorizado()
+    {
+        return $this->hasOne( 'Modules\Auth\Entities\UserMotorizado' , 'ci_empleado' , 'ci_empleado' );
+    }       
 }

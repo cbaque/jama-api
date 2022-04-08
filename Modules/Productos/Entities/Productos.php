@@ -17,6 +17,7 @@ class Productos extends Model
         , 'descripcion' 
         , 'costo' 
         , 'iva' 
+        , 'id_vIva' 
         , 'id_estado' 
         , 'fecha_publicidad' 
         , 'id_tpubli'
@@ -36,5 +37,10 @@ class Productos extends Model
     public function aliado()
     {
         return $this->hasOne( 'Modules\Productos\Entities\ProductosAliados' , 'ruc_empresa' , 'ruc_empresa' );
-    }           
+    }    
+
+    public function detalleIva()
+    {
+        return $this->hasOne( 'Modules\Productos\Entities\ProductosIva' , 'id_vIva' , 'id_vIva' );
+    }            
 }

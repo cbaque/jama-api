@@ -17,3 +17,7 @@ Route::post('/register', [AuthController::class, 'create']);
 Route::post('/auth/login', [AuthController::class, 'store']);
 Route::post('/generar', [AuthController::class, 'generate']);
 Route::post('/edit', [AuthController::class, 'update']);
+
+
+
+Route::resource('motorizado', AuthMotorizadoController::class);

@@ -10,7 +10,8 @@ class Pedido extends Model
     use HasFactory;
 
     protected $fillable = [
-        'fecha_pedido' 
+        'id_pedido'
+        ,'fecha_pedido' 
         , 'ci_cliente' 
         , 'estado_pedido' 
     ];
@@ -23,4 +24,14 @@ class Pedido extends Model
     {
         return \Modules\Pedidos\Database\factories\PedidoFactory::new();
     }
+
+    public function cliente()
+    {
+        return $this->hasOne( 'Modules\Pedidos\Entities\Cliente' , 'ci_cliente' , 'ci_cliente' );
+    }  
+
+    public function productos()
+    {
+        return $this->hasMany( 'Modules\Pedidos\Entities\DetalleCompra' , 'id_pedido' , 'id_pedido' );
+    }         
 }

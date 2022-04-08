@@ -87,6 +87,9 @@ class PedidosClienteController extends Controller
                 $detalle_tmp->id_prod = $value['id_producto'];
                 $detalle_tmp->id_pedido = $pedido->id;
                 $detalle_tmp->cantidad = $value['cantidad'];
+                $detalle_tmp->subtotal = $value['subtotal'];
+                $detalle_tmp->iva_valor = $value['iva_valor'];
+                $detalle_tmp->total = $value['total'];                
                 $detalle_tmp->estado_compra = 'p';
                 $array_detalle[] = $detalle_tmp->attributesToArray();
             }

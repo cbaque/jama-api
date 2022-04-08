@@ -26,4 +26,9 @@ class ProductosAliados extends Model
     {
         return \Modules\Productos\Database\factories\ProductosAliadosFactory::new();
     }
+
+    public function imagen()
+    {
+        return $this->hasOne( 'Modules\Auth\Entities\EmpresaImagen' , 'ruc_empresa' , 'ruc_empresa' );
+    }     
 }
