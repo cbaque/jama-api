@@ -10,7 +10,8 @@ class DetalleCompra extends Model
     use HasFactory;
 
     protected $fillable = [
-        'id_prod' 
+        'id_dtcompra'
+        ,'id_prod' 
         , 'id_pedido' 
         , 'cantidad' 
         , 'subtotal' 

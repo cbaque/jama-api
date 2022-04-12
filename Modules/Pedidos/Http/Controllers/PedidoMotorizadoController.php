@@ -11,6 +11,7 @@ use Illuminate\Http\Response;
 use Modules\Pedidos\Entities\Pedido;
 use Modules\Pedidos\Entities\DetalleCompra as Detalle;
 use Modules\Pedidos\Entities\Factura;
+use Modules\Auth\Entities\UserMotorizado;
 use PDF;
 
 class PedidoMotorizadoController extends Controller
@@ -46,9 +47,12 @@ class PedidoMotorizadoController extends Controller
         {
             DB::beginTransaction();
 
+            $motorizado = UserMotorizado::where('ci_empleado', $request->ci_empleado)->first();
+
             $factura['nro_fact'] = str_pad($request->id_pedido, 8, "0", STR_PAD_LEFT);;
             $factura['fecha_emi'] = now();
-            $factura['id_mt'] = auth()->user()->motorizado->id_mt;
+            // $factura['id_mt'] = auth()->user()->motorizado->id_mt;
+            $factura['id_mt'] = $motorizado->id_mt;
             $factura['id_pedido'] = $request->id_pedido;
             $factura['id_tarifamt'] = $request->id_tarifamt;
             $factura['id_fpago'] = $request->id_fpago;
@@ -57,10 +61,12 @@ class PedidoMotorizadoController extends Controller
             $factura = Factura::create( $factura );
             Pedido::where('id_pedido', $request->id_pedido)->update(['estado_pedido' => 'f']);
 
-            $data = Pedido::with(['cliente', 'productos.producto'])->where('id_pedido',$request->id_pedido )->get();
+            $detalle = Detalle::where('id_pedido', $request->id_pedido)->get();
+            foreach ($detalle as $key => $value) {
+                Detalle::where('id_dtcompra', $value['id_dtcompra'])->update(['estado_compra' => 'f']);
+            } 
 
-            // $pdf = PDF::loadView( 'factura', compact('data') );
-            // return $pdf->download('invoice.pdf');               
+            $data = Pedido::with(['cliente', 'productos.producto'])->where('id_pedido',$request->id_pedido )->get();             
 
             DB::commit();
             return response_data( $factura, Response::HTTP_CREATED, 'Pedido creado correctamente');
@@ -80,13 +86,13 @@ class PedidoMotorizadoController extends Controller
      */
     public function show($id)
     {
-        $data = Pedido::with(['cliente', 'productos.producto'])->where('id_pedido',$id)->get();
+        $data = Pedido::with(['cliente', 'productos.producto', 'factura'])->where('id_pedido',$id)->get();
 
         $subtotal = collect( $data[0]['productos'] )->sum('subtotal'); 
         $iva_valor = collect( $data[0]['productos'] )->sum('iva_valor');
         $total = collect( $data[0]['productos'] )->sum('total');
 
-        $datos = [ 'data' => $data, 'subtotal'  => $subtotal, 'iva' =>  $iva_valor, 'total' => $total ];
+        $datos = [ 'data' => $data, 'subtotal'  => $subtotal, 'iva' =>  $iva_valor, 'total' => $total  ];
 
         $pdf = PDF::loadView( 'factura', compact('datos') );
         return $pdf->download('invoice.pdf');        

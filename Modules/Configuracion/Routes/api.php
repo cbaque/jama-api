@@ -13,7 +13,9 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::group(['middleware' => ['auth:api']], function () {
-    Route::resource('config-tarifa-moto', TarifaMotorizadoController::class);
-    Route::resource('forma-pago-moto', FormaPagoMotorizadoController::class);
-});
+// Route::group(['middleware' => ['auth:api']], function () {
+    
+// });
+
+Route::resource('forma-pago-moto', FormaPagoMotorizadoController::class);
+Route::resource('config-tarifa-moto', TarifaMotorizadoController::class);

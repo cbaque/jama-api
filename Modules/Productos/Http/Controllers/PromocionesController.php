@@ -19,7 +19,7 @@ class PromocionesController extends Controller
     {
         try
         {
-            $data = Productos::with(['imagen', 'aliado'])->where( 'id_estado',  1 )->where( 'id_tpubli', 2 )->get();
+            $data = Productos::with(['imagen', 'aliado', 'detalleIva'])->where( 'id_estado',  1 )->where( 'id_tpubli', 2 )->get();
 
             return response_data( $data, Response::HTTP_OK, 'Datos leidos correctamente');            
         }

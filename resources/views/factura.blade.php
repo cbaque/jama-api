@@ -11,12 +11,25 @@
       <tbody>
 
         <tr>
-          <td>CLIENTE</td>
+          <td>Factura</td>
+          <td>{{ $datos['data'][0]['factura'][0]['nro_fact'] }}<</td>
+        </tr>  
+
+
+        <tr>
+          <td>Fecha Emisi&oacute;n</td>
+          <td>{{ $datos['data'][0]['factura'][0]['fecha_emi'] }}<</td>
+        </tr>  
+
+        <br>        
+
+        <tr>
+          <td>Cliente</td>
           <td>{{ $datos['data'][0]['cliente']['nombres'] }} {{ $datos['data'][0]['cliente']['apellidos'] }}</td>
         </tr>
 
         <tr>
-          <td>DIRECCI&Oacute;N</td>
+          <td>Direcc&oacute;n</td>
           <td>{{ $datos['data'][0]['cliente']['direccion'] }}<</td>
         </tr>
 
@@ -28,7 +41,7 @@
         <tr>
           <td>Tel&eacute;fono</td>
           <td>{{ $datos['data'][0]['cliente']['tlf_celular'] }}<</td>
-        </tr> 
+        </tr>                  
 
       </tbody>
     </table>
@@ -79,7 +92,7 @@
                 <td></td>
                 <td></td>
                 <td></td>
-                <td style="text-align: right;">TOTAL A PAGAR ${{ $datos['subtotal'] }}</td>
+                <td style="text-align: right;">TOTAL A PAGAR ${{ $datos['total'] }}</td>
             </tr>                         
         </tfoot>
 

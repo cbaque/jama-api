@@ -15,10 +15,10 @@ use Illuminate\Http\Request;
 
 Route::group(['middleware' => ['auth:api']], function () {
     Route::resource('pedido', PedidosController::class);
-    Route::resource('motorizado-pedidos', PedidoMotorizadoController::class )->except(['show']);
+    
 });
 
-
+Route::resource('motorizado-pedidos', PedidoMotorizadoController::class );
 Route::resource('cliente/pedido', PedidosClienteController::class);
 Route::resource('login/pedido', PedidosLoginController::class);
-Route::resource('motorizado-pedidos', PedidoMotorizadoController::class )->only(['show']);
+// Route::resource('motorizado-pedidos', PedidoMotorizadoController::class )->only(['show']);

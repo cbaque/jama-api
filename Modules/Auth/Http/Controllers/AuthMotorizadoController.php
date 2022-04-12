@@ -5,7 +5,7 @@ namespace Modules\Auth\Http\Controllers;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use App\Models\User;
+use App\Models\UserMoto as User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Response;
 use DB;
@@ -42,17 +42,18 @@ class AuthMotorizadoController extends Controller
             'password' => 'required'
         ]);
 
-        if ( ! auth()->attempt( $loginData ) ) {
+        $user = User::with('empleado')->where('usuario', $loginData['email'])->where( 'pass', md5( $loginData['password'] ) )->where('id_perfil', 3)->first();
+
+        if ( !$user ) {
             return response_data([], Response::HTTP_INTERNAL_SERVER_ERROR, 'Credenciales Incorrectas.');
         }
-        
-        $token = auth()->user()->createToken('authToken')->accessToken;
 
         return response_data([ 
-            'username' => auth()->user()->name, 
-            'token' => $token,
+            'username' => $user->usuario, 
+            'token' => null,
             'empleado' => [
-                'nombres' => auth()->user()->motorizado->empleado->name,
+                'nombres' => $user->empleado->name,
+                'ci_empleado' => $user->empleado->ci_empleado
             ]
         ], Response::HTTP_OK, 'Login correctamente.');
     }
@@ -64,7 +65,9 @@ class AuthMotorizadoController extends Controller
      */
     public function show($id)
     {
-        return view('auth::show');
+        $user = User::where('id_sg', $id)->first();
+        $password = md5( 'holamudno');
+        return response_data($password, Response::HTTP_CREATED, 'Usuario actualizado exitosamente.' );
     }
 
     /**
@@ -85,7 +88,25 @@ class AuthMotorizadoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        try {
+
+            $user = User::where('usuario', $request->cedula)->first();
+            
+            if ( !isset( $user ) ) :
+                throw new \ErrorException( 'Cliente no se encuentra registrado' );
+            endif;
+
+            $password = md5( $request->password );
+
+            $user->update([ 'pass' => $password ]);
+
+            DB::commit();
+            return response_data($user, Response::HTTP_CREATED, 'Usuario actualizado exitosamente.' );
+            
+        } catch (\Exception $e) {
+            DB::rollback(); 
+            return response_data(null, Response::HTTP_INTERNAL_SERVER_ERROR , $e->getMessage() );            
+        }        
     }
 
     /**

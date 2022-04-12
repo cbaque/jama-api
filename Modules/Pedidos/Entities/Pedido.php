@@ -33,5 +33,10 @@ class Pedido extends Model
     public function productos()
     {
         return $this->hasMany( 'Modules\Pedidos\Entities\DetalleCompra' , 'id_pedido' , 'id_pedido' );
-    }         
+    } 
+
+    public function factura()
+    {
+        return $this->hasMany( 'Modules\Pedidos\Entities\Factura' , 'id_pedido' , 'id_pedido' );
+    }              
 }
